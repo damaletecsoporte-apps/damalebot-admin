@@ -387,15 +387,22 @@
       let isValid = false;
       let adminObj = { username: user.split('@')[0], email: user, role: 'superadmin' };
 
-      try {
-        const { data: dbAdmins, error } = await supabase.from('admins').select('*').or(`username.eq.${user},email.eq.${user}`).limit(1);
-        if (!error && dbAdmins && dbAdmins.length > 0) {
-          if (dbAdmins[0].password === pass || dbAdmins[0].pin === pass) {
-            isValid = true;
-            adminObj = { username: dbAdmins[0].username, email: dbAdmins[0].email, role: dbAdmins[0].role || 'superadmin' };
-          }
+              try {
+            // Consulta directa y segura a tu tabla admins en Supabase
+            const { data, error } = await supabaseClient
+                .from('admins')
+                .select('*')
+                .or(`username.eq.${user},email.eq.${user}`)
+                .eq('password_hash', pass)
+                .single();
+
+            if (!error && data) {
+                isValid = true;
+                adminObj = { username: data.username, email: data.email };
+            }
+        } catch (err) {
+            console.log('Error de validación:', err);
         }
-      } catch (err) {}
 
       if (!isValid) {
         if (
