@@ -371,38 +371,59 @@
     }
 
     document.getElementById('togglePassBtn').addEventListener('click', () => {
-      const p = document.getElementById('loginPass');
+      const pdamaletec.soporte@gmail.com = document.getElementById('loginPass');
       p.type = p.type === 'password' ? 'text' : 'password';
     });
 
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const user = document.getElementById('loginUser').value.trim().toLowerCase();
-      const pass = document.getElementById('loginPass').value.trim();
-      const remember = document.getElementById('rememberMeCheck').checked;
+      
+      const userInput = document.getElementById('loginUser').value.trim();
+      const passInput = document.getElementById('loginPass').value.trim();
       const alertBox = document.getElementById('loginAlert');
       const alertText = document.getElementById('loginAlertText');
+
       alertBox.classList.add('hidden');
 
-      let isValid = false;
-      let adminObj = { username: user.split('@')[0], email: user, role: 'superadmin' };
+      // 1. Verificación directa y segura de tus credenciales maestras
+      if ((userInput === 'DAMALETEC' || userInput === 'damaletec.soporte@gmail.com') && passInput === '1978pdardamaleTec780221') {
+        // Acceso concedido como SuperAdmin Maestro
+        localStorage.setItem('admin_logged', 'true');
+        localStorage.setItem('admin_user', 'DAMALETEC');
+        
+        document.getElementById('loginSection').classList.add('hidden');
+        document.getElementById('adminSection').classList.remove('hidden');
+        
+        // Cargamos los datos de las tiendas de Supabase
+        fetchStoreAgents();
+        return;
+      }
 
-              try {
-            // Consulta directa y segura a tu tabla admins en Supabase
-            const { data, error } = await supabaseClient
-                .from('admins')
-                .select('*')
-                .or(`username.eq.${user},email.eq.${user}`)
-                .eq('password_hash', pass)
-                .single();
+      // 2. Si no es el maestro, intentamos consultar la tabla admins en Supabase por si agregaste más usuarios
+      try {
+        const { data, error } = await supabaseClient
+          .from('admins')
+          .select('*')
+          .or(`username.eq.${userInput},email.eq.${userInput}`)
+          .single();
 
-            if (!error && data) {
-                isValid = true;
-                adminObj = { username: data.username, email: data.email };
-            }
-        } catch (err) {
-            console.log('Error de validación:', err);
+        if (!error && data && data.password_hash === passInput) {
+          localStorage.setItem('admin_logged', 'true');
+          localStorage.setItem('admin_user', data.username);
+          
+          document.getElementById('loginSection').classList.add('hidden');
+          document.getElementById('adminSection').classList.remove('hidden');
+          fetchStoreAgents();
+          return;
         }
+      } catch (err) {
+        console.log('Error secundario de BD:', err);
+      }
+
+      // Si nada coincide, muestra error limpio
+      alertText.textContent = '❌ Credenciales incorrectas. Verifica tu usuario y contraseña.';
+      alertBox.classList.remove('hidden');
+    })
 
       if (!isValid) {
         if (
