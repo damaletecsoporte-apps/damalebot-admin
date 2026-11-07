@@ -1,0 +1,21 @@
+{
+  "name": "DAMALEBOT Admin Maestro",
+  "short_name": "DAMALEBOT",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080c14",
+  "theme_color": "#84cc16",
+  "description": "Panel de administración maestro para DAMALEBOT con Supabase y control en tiempo real.",
+  "icons": [
+    {
+      "src": "https://api.iconify.design/lucide:bot.svg?color=%2384cc16",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "https://api.iconify.design/lucide:bot.svg?color=%2384cc16",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
