@@ -1,0 +1,6 @@
+{
+  "name": "DAMALEBOT - Panel de Administración Maestro",
+  "description": "Panel de administración maestro y seguro para DAMALEBOT con Supabase, tiempo real, gestión de agentes, catálogos PDF y control de tiendas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
