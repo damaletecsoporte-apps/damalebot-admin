@@ -6,6 +6,15 @@
   <title>DAMALEBOT - Panel de Administración Maestro</title>
   <meta name="description" content="Panel de administración maestro y seguro para DAMALEBOT con Supabase y control en tiempo real.">
   
+  <!-- Configuración PWA para instalación en Celular -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#080c14">
+  
+  <!-- Manifiesto en línea para permitir instalación directa -->
+  <link rel="manifest" href='data:application/manifest+json,{"name":"DAMALEBOT Admin","short_name":"DAMALEADMIN","start_url":"/","display":"standalone","background_color":"#080c14","theme_color":"#84cc16","icons":[{"src":"https://api.iconify.design/lucide:bot.svg?color=%2384cc16","sizes":"192x192","type":"image/svg+xml"}]}'>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -61,7 +70,7 @@
             <span>Acceso Administrador</span>
           </div>
           <span class="text-[10px] px-2 py-0.5 rounded-full bg-lime-500/10 text-lime-400 border border-lime-500/20 font-mono">
-            Vercel Ready
+            PWA Ready
           </span>
         </div>
 
@@ -350,7 +359,6 @@
 
         alertBox.classList.add('hidden');
 
-        // Validación directa de tus credenciales de SuperAdmin
         if ((user === 'DAMALETEC' || user === 'damaletec.soporte@gmail.com') && pass === '1978pdardamaleTec780221') {
           localStorage.setItem('admin_logged', 'true');
           localStorage.setItem('admin_user', 'DAMALETEC');
@@ -360,7 +368,6 @@
           return;
         }
 
-        // Si no es el maestro, revisamos la tabla admins en Supabase
         try {
           const { data, error } = await supabaseClient
             .from('admins')
